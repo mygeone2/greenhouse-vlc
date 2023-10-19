@@ -1,0 +1,40 @@
+import machine
+import utime
+import urandom
+
+# Configuración de pines PWM
+output_pin = machine.Pin(0)
+pwm = machine.PWM(output_pin)
+pwm.freq(40000)
+pwm.duty_u16(0)  # Iniciar con PWM apagado
+
+time_cycle = 1000 #ms
+def start_packet():
+    pwm.duty_u16(32767*2)
+    utime.sleep_ms(time_cycle*5)
+    pwm.duty_u16(0)
+    utime.sleep_ms(time_cycle*1)
+    
+def payload_packet(array):
+    for bit in array:
+        if bit == 1:
+            pwm.duty_u16(32767*2)
+        else:
+            pwm.duty_u16(0)
+        
+        utime.sleep_ms(time_cycle*1)
+        pwm.duty_u16(0)
+        
+        
+
+try:
+    while True:
+        # Generar una trama aleatoria de 4 bits representando el estado de los 4 actuadores
+        data = [urandom.randint(0, 1) for _ in range(4)]
+        print("Enviando trama:", data)  # Imprimir la trama para depuración
+        start_packet()
+        payload_packet(data)
+
+except KeyboardInterrupt:
+    pwm.deinit()
+
