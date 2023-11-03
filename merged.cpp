@@ -31,6 +31,47 @@
     std::vector<std::pair<uint32_t, uint32_t>> 
     sensor_ranges_measures = {{25000, 30000}, {50000, 55000}, {70000, 80000}, {100000, 105000}, {126000, 129000}, {150000, 155000}, {175000, 180000}, {200000, 205000}};
 
+    const int LCD_CLEARDISPLAY = 0x01;
+const int LCD_RETURNHOME = 0x02;
+const int LCD_ENTRYMODESET = 0x04;
+const int LCD_DISPLAYCONTROL = 0x08;
+const int LCD_CURSORSHIFT = 0x10;
+const int LCD_FUNCTIONSET = 0x20;
+const int LCD_SETCGRAMADDR = 0x40;
+const int LCD_SETDDRAMADDR = 0x80;
+
+// Flags for display entry mode
+const int LCD_ENTRYSHIFTINCREMENT = 0x01;
+const int LCD_ENTRYLEFT = 0x02;
+
+// Flags for display and cursor control
+const int LCD_BLINKON = 0x01;
+const int LCD_CURSORON = 0x02;
+const int LCD_DISPLAYON = 0x04;
+
+// Flags for display and cursor shift
+const int LCD_MOVERIGHT = 0x04;
+const int LCD_DISPLAYMOVE = 0x08;
+
+// Flags for function set
+const int LCD_5x10DOTS = 0x04;
+const int LCD_2LINE = 0x08;
+const int LCD_8BITMODE = 0x10;
+
+// Flag for backlight control
+const int LCD_BACKLIGHT = 0x08;
+
+const int LCD_ENABLE_BIT = 0x04;
+
+// By default, these LCD display drivers are on bus address 0x27
+static int addr = 0x27;
+
+// Modes for lcd_send_byte
+#define LCD_CHARACTER 1
+#define LCD_COMMAND 0
+
+#define MAX_LINES 2
+#define MAX_CHARS 16
 
 void i2c_write_byte(uint8_t val) {
 #ifdef i2c_default
@@ -151,27 +192,27 @@ int main() {
                     if (time_signal_stayed_on > sensor_ranges_measures[0].first && time_signal_stayed_on < sensor_ranges_measures[0].second)
                     {
                         current_combination_state = 1;
-                        currentStateText = "Estado: 1";
+                        currentStateText = "Actuad.: 0 0 1";
                     }
                     else if (time_signal_stayed_on > sensor_ranges_measures[1].first && time_signal_stayed_on < sensor_ranges_measures[1].second)
                     {
                         current_combination_state = 2;
-                         currentStateText = "Estado: 2";
+                         currentStateText = "Actuad.: 0 0 1";
                     }
                     else if (time_signal_stayed_on > sensor_ranges_measures[2].first && time_signal_stayed_on < sensor_ranges_measures[2].second)
                     {
                         current_combination_state = 3;
-                         currentStateText = "Estado: 3";
+                         currentStateText = "Actuad.: 0 0 1";
                     }
                     else if (time_signal_stayed_on > sensor_ranges_measures[3].first && time_signal_stayed_on < sensor_ranges_measures[3].second)
                     {
                         current_combination_state = 4;
-                         currentStateText = "Estado: 4";
+                         currentStateText = "Actuad.: 0 0 1";
                     }
                     else if (time_signal_stayed_on > sensor_ranges_measures[4].first && time_signal_stayed_on < sensor_ranges_measures[4].second)
                     {
                         current_combination_state = 5;
-                         currentStateText = "Estado: 5";
+                         currentStateText = "Actuadores: 0 0 1";
                     }
                     else if (time_signal_stayed_on > sensor_ranges_measures[5].first && time_signal_stayed_on < sensor_ranges_measures[5].second)
                     {
